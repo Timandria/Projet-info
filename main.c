@@ -25,33 +25,26 @@ typedef struct case_tableau {
 
 
 void TriBulle(case_tableau tab[TAILLE][TAILLE]){   //TriBulle pour simuler une gravité à droite pas fonctionnelle voir le cours pour appeller et déclarer correctement 
-    bool desordre;
-    noEtape, noCase : ENTIER
-    temp : T
-    noEtape = n - 1
-    do{
-        desordre = 0;
-        Pour noCase de 0 à noEtape Faire
-        if (A[noCase] > A[noCase + 1]) {
-            desordre ← VRAI
-temp ← A[noCase]
-A[noCase] ← A[noCase + 1] A[noCase + 1] ← temp
-FinSi
-FinPour
-noEtape ← noEtape - 1
-TantQue (noEtape > 0) et desordre
-Fin
-    
 bool desordre; //BOOLEEN
 int i;
 int k;
 char temp;
 int noEtape;
 noEtape=k-1;
-
-printf("ICI");
-
- for(i=0;i<TAILLE;i++){
+do{
+    desordre = 0;
+    for(i=0;i<9;i++){
+        for(k=0;k<9;k++){   //noCase de 0 à noEtape
+            if (tab[i][k+1].variable==1){    //ajustement à faire pour une gravité à droite
+                desordre=1;
+                temp = tab[i][k].caractere;
+                tab[i][k].caractere=tab[i][k+1].caractere;
+                tab[i][k+1].caractere = temp;
+            }
+        }
+    }
+}while (desordre==1);
+for(i=0;i<TAILLE;i++){
         printf("\n \n");
         printf("+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne supérieure de séparation
         for(k=0;k<TAILLE;k++){
@@ -94,22 +87,6 @@ printf("ICI");
         printf("|"); // Barre de fin
     } 
     printf("\n+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne inférieure de séparation
-    
-do{
-    desordre = 0;
-    for(i=0;i<noEtape;i++){
-        for(k=0;k<noEtape;k++){   //noCase de 0 à noEtape
-            if (tab[i][k].variable > tab[i][k+1].variable){    //ajustement à faire pour une gravité à droite
-                desordre=1;
-                temp = tab[i][k].caractere;
-                tab[i][k].caractere=tab[i][k+1].caractere;
-                tab[i][k+1].caractere = temp;
-            }
-        }
-    }
-noEtape = noEtape - 1;
-}while ((noEtape > 0)&&desordre==1);
-
 }
 
 
@@ -297,6 +274,14 @@ int main()
     
     return 0;
 }
+
+
+
+
+
+
+
+
 
 
 
