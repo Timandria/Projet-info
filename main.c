@@ -24,26 +24,42 @@ typedef struct case_tableau {
 
 
 
-void TriBulle(case_tableau tab[TAILLE][TAILLE]){   //TriBulle pour simuler une gravité à droite pas fonctionnelle voir le cours pour appeller et déclarer correctement 
-bool desordre; //BOOLEEN
-int i;
-int k;
-char temp;
-int noEtape;
-noEtape=k-1;
-do{
-    desordre = 0;
-    for(i=0;i<9;i++){
-        for(k=0;k<9;k++){   //noCase de 0 à noEtape
-            if (tab[i][k+1].variable==1){    //ajustement à faire pour une gravité à droite
-                desordre=1;
-                temp = tab[i][k].caractere;
-                tab[i][k].caractere=tab[i][k+1].caractere;
-                tab[i][k+1].caractere = temp;
+void DeplacerGauche(case_tableau tab[TAILLE][TAILLE]) {
+    int i, j, k;
+    bool vérif=0;
+
+    for (i = 0; i < TAILLE; i++) {
+        for (j = 0; j < TAILLE; j++) {
+            if (tab[i][j].variable == 1) {
+                k = j;
+                while (k > 0 && tab[i][k - 1].variable == 0) {
+                    // Échanger le caractère (avec son booléen précédent!!!!)
+                    char tempCaractere = tab[i][k - 1].caractere;
+                    int tempVariable = tab[i][k - 1].variable;
+                    tab[i][k - 1].caractere = tab[i][k].caractere;
+                    tab[i][k - 1].variable = tab[i][k].variable;
+                    tab[i][k].caractere = tempCaractere;
+                    tab[i][k].variable = tempVariable;
+                    k--;
+                }
             }
         }
     }
-}while (desordre==1);
+
+    do{                                                    // remplacement de tout les caractères avec un booléen = 1 
+        for(i=0;i<TAILLE;i++){
+            vérif=0;
+            for(k=0;k<TAILLE;k++){ // Génération aléatoire des caractères
+                if(tab[i][k].variable==1){
+                    vérif=1;
+                    tab[i][k].caractere='A'+rand()%6; // 6 symboles différents
+                    tab[i][k].variable=0; // variable à zero pour le compteur
+                }
+            }
+        }    
+    }while(vérif==1);
+
+}
 for(i=0;i<TAILLE;i++){
         printf("\n \n");
         printf("+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne supérieure de séparation
