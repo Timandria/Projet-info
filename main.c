@@ -22,112 +22,9 @@ typedef struct case_tableau {
     bool variable;
 } case_tableau;
 
-
-
-void DeplacerGauche(case_tableau tab[TAILLE][TAILLE]) {
-    int i, j, k;
-    bool vérif=0;
-
-    for (i = 0; i < TAILLE; i++) {
-        for (j = 0; j < TAILLE; j++) {
-            if (tab[i][j].variable == 1) {
-                k = j;
-                while (k > 0 && tab[i][k - 1].variable == 0) {
-                    // Échanger le caractère (avec son booléen précédent!!!!)
-                    char tempCaractere = tab[i][k - 1].caractere;
-                    int tempVariable = tab[i][k - 1].variable;
-                    tab[i][k - 1].caractere = tab[i][k].caractere;
-                    tab[i][k - 1].variable = tab[i][k].variable;
-                    tab[i][k].caractere = tempCaractere;
-                    tab[i][k].variable = tempVariable;
-                    k--;
-                }
-            }
-        }
-    }
-
-    do{                                                    // remplacement de tout les caractères avec un booléen = 1 
-        for(i=0;i<TAILLE;i++){
-            vérif=0;
-            for(k=0;k<TAILLE;k++){ // Génération aléatoire des caractères
-                if(tab[i][k].variable==1){
-                    vérif=1;
-                    tab[i][k].caractere='A'+rand()%6; // 6 symboles différents
-                    tab[i][k].variable=0; // variable à zero pour le compteur
-                }
-            }
-        }    
-    }while(vérif==1);
-
-}
-for(i=0;i<TAILLE;i++){
-        printf("\n \n");
-        printf("+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne supérieure de séparation
-        for(k=0;k<TAILLE;k++){
-            if(tab[i][k].variable==1){
-                printf("|");
-                printf("\x1b[31m O ");
-                printf(PCOLOR("%d"),0);
-            }
-            else if(tab[i][k].caractere=='A'){
-                printf("|");
-                printf("\x1b[32m A ");
-                printf(PCOLOR("%d"),0);
-            }
-            else if(tab[i][k].caractere=='B'){
-                printf("|");
-                printf("\x1b[33m B ");
-                printf(PCOLOR("%d"),0);
-            }
-            else if(tab[i][k].caractere=='C'){
-                printf("|");
-                printf("\x1b[34m C ");
-                printf(PCOLOR("%d"),0);
-            }
-            else if(tab[i][k].caractere=='D'){
-                printf("|");
-                printf("\x1b[35m D ");
-                printf(PCOLOR("%d"),0);
-            }
-            else if(tab[i][k].caractere=='E'){
-                printf("|");
-                printf("\x1b[36m E ");
-                printf(PCOLOR("%d"),0);
-            }
-            else if(tab[i][k].caractere=='F'){
-                printf("|");
-                printf("\x1b[37m F ");
-                printf(PCOLOR("%d"),0);
-            }
-        }
-        printf("|"); // Barre de fin
-    } 
-    printf("\n+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne inférieure de séparation
-}
-
-
-
-int main()
-{
-    int ol,oc; //optimisation fin du k en ligne et colonne 
-    case_tableau tab[TAILLE][TAILLE]; // Définition du tableau
-    srand(time(NULL)); // Génération aléatoire
-    int i,k,j;
-    for(i=0;i<TAILLE;i++){
-        for(k=0;k<TAILLE;k++){ // Génération aléatoire des caractères
-            tab[i][k].caractere='A'+rand()%6; // 6 symboles différents
-            tab[i][k].variable=0; // variable à zero pour le compteur
-        }
-    }
-    for(i=0;i<TAILLE;i++){
-        printf("\n \n");
-        printf("+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne supérieure de séparation
-        for(k=0;k<TAILLE;k++){
-            printf("| %c ",tab[i][k].caractere);
-        }
-        printf("|"); // Barre de fin
-    } 
-    printf("\n+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne inférieure de séparation
+void détec_marque(case_tableau tab[TAILLE][TAILLE]){
+    int i, j, k,l,m,o;
+    int ol,oc; //optimisation fin du k en ligne et colonne
     for (int i = 0; i < 10; i++) {
         ol=10;
         for (int j = 0; j < ol; j++) {
@@ -239,9 +136,62 @@ int main()
                 }
             }
         }        
+    }    
+}
+
+void DeplacerGauche(case_tableau tab[TAILLE][TAILLE]) {
+    int i,j,k;
+    bool vérif=0;
+    
+    
+    
+    for (i = 0; i < TAILLE; i++) {
+        for (j = 0; j < TAILLE; j++) {
+            if (tab[i][j].variable == 1) {
+                k = j;
+                while (k > 0 && tab[i][k - 1].variable == 0) {
+                    // Échanger le caractère (avec son booléen précédent!!!!)
+                    char tempCaractere = tab[i][k - 1].caractere;
+                    int tempVariable = tab[i][k - 1].variable;
+                    tab[i][k - 1].caractere = tab[i][k].caractere;
+                    tab[i][k - 1].variable = tab[i][k].variable;
+                    tab[i][k].caractere = tempCaractere;
+                    tab[i][k].variable = tempVariable;
+                    k--;
+                }
+            }
+        }
     }
 
-    // Affichage du tableau
+
+    
+
+}
+
+void remplacement(case_tableau tab[TAILLE][TAILLE]){
+    int i, j, k;
+    bool vérif=0;  
+    
+    
+    do{             // remplacement de tout les caractères avec un booléen = 1 
+        détec_marque(tab);
+        DeplacerGauche(tab);
+        for(i=0;i<TAILLE;i++){
+            vérif=0;
+            for(k=0;k<TAILLE;k++){ // Génération aléatoire des caractères
+                if(tab[i][k].variable==1){
+                    vérif=1;
+                    tab[i][k].caractere='A'+rand()%6; // 6 symboles différents
+                    tab[i][k].variable=0; // variable à zero pour le compteur
+                }
+            }
+        }
+        
+    }while(vérif==1);    
+}
+
+void Affichage(case_tableau tab[TAILLE][TAILLE]){ // Affichage du tableau
+int i,j,k;
     for(i=0;i<TAILLE;i++){
         printf("\n \n");
         printf("+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne supérieure de séparation
@@ -285,11 +235,30 @@ int main()
         printf("|"); // Barre de fin
     } 
     printf("\n+---+---+---+---+---+---+---+---+---+---+\n"); // Ligne inférieure de séparation
-    TriBulle(tab);//ajustement à faire pour un bon appel
-    
+}
+
+
+
+
+int main()
+{
+    int ol,oc; //optimisation fin du k en ligne et colonne 
+    case_tableau tab[TAILLE][TAILLE]; // Définition du tableau
+    srand(time(NULL)); // Génération aléatoire
+    int i,k,j;
+    for(i=0;i<TAILLE;i++){
+        for(k=0;k<TAILLE;k++){ // Génération aléatoire des caractères
+            tab[i][k].caractere='A'+rand()%6; // 6 symboles différents
+            tab[i][k].variable=0; // variable à zero pour le compteur
+        }
+    }
+    Affichage(tab);
+    remplacement(tab);
+    Affichage(tab);
     
     return 0;
 }
+
 
 
 
