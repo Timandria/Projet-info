@@ -22,9 +22,12 @@ typedef struct case_tableau {
     bool variable;
 } case_tableau;
 
-void détec_marque(case_tableau tab[TAILLE][TAILLE]){
+bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) { 
+    int ol, oc; // optimisation fin du k en ligne et colonne
+    bool vérif = 0;
+    vériftot = 0;   //booléen ppur vérifier qu'il ne reste aucune ligne ou colonne de 3 ou plus
     int i, j, k,l,m,o;
-    int ol,oc; //optimisation fin du k en ligne et colonne
+    vériftot=0;
     for (int i = 0; i < 10; i++) {
         ol=10;
         for (int j = 0; j < ol; j++) {
@@ -42,6 +45,7 @@ void détec_marque(case_tableau tab[TAILLE][TAILLE]){
                     for (int k = 0; k < compteur; k++) {
                         tab[i][k].variable=1; // remplacer les éléments par des "O"
                     }
+                    vériftot=1;
                 }
                 if ((compteurinf >= 3&&compteur<=1)){
                     tab[i][0].variable=1; // remplacer du premier éléments par un "O"
@@ -49,6 +53,7 @@ void détec_marque(case_tableau tab[TAILLE][TAILLE]){
                         tab[i][k].variable=1; // remplacer les éléments par des "O"
                     }
                     ol=10-compteurinf; //optimisation fin de ligne
+                    vériftot=1;
                 }
                 if (compteurinf+compteur>4&&compteur>=1&&compteurinf>=1){
                     for (int k = 0; k < compteur; k++) {
@@ -58,6 +63,7 @@ void détec_marque(case_tableau tab[TAILLE][TAILLE]){
                         tab[i][k].variable=1; // remplacer les éléments par des "O"
                     }
                     ol=10-compteurinf; //optimisation fin de ligne
+                    vériftot=1;
                 }
             }
             if(i==0){
@@ -72,6 +78,7 @@ void détec_marque(case_tableau tab[TAILLE][TAILLE]){
                 if (compteur >= 3&&compteurinf==1) { // si on a trouvé une série d'au moins 3 éléments égaux
                     for (int k = 0; k < compteur; k++) {
                         tab[k][j].variable=1; // remplacer les éléments par des "O"
+                        vériftot=1;
                         
                     }
                 }
@@ -79,6 +86,7 @@ void détec_marque(case_tableau tab[TAILLE][TAILLE]){
                     tab[0][j].variable=1; // remplacer du premier éléments par un "O"
                     for (int k = 11-compteurinf; k <10 ; k++) {
                         tab[k][j].variable=1; // remplacer les éléments par des "O"
+                        vériftot=1;
                         
                     }
                 oc=10-compteurinf;
@@ -92,6 +100,7 @@ void détec_marque(case_tableau tab[TAILLE][TAILLE]){
                        
                     }
                 oc=10-compteurinf; //optimisation fin de ligne
+                vériftot=1;
                 }
             }
             int compteur = 1; // initialisation du compteur à 1
@@ -124,6 +133,7 @@ void détec_marque(case_tableau tab[TAILLE][TAILLE]){
                     for (int k = 0; k < compteur; k++) {
                         tab[i][j+k].variable=1; // remplacer les éléments par des "O"
                     }
+                    vériftot=1;
                 }
                 compteur = 1; // réinitialisation du compteur à 1
                 while (i + compteur < 10 && tab[i + compteur][j].caractere == tab[i][j].caractere) {
@@ -133,11 +143,14 @@ void détec_marque(case_tableau tab[TAILLE][TAILLE]){
                     for (int k = 0; k < compteur; k++) {
                         tab[i+k][j].variable=1; // remplacer les éléments par des "O"
                     }
+                    vériftot=1;
                 }
             }
         }        
-    }    
+    }
+    return vériftot;
 }
+
 
 void DeplacerGauche(case_tableau tab[TAILLE][TAILLE]) {
     int i,j,k;
@@ -170,11 +183,12 @@ void DeplacerGauche(case_tableau tab[TAILLE][TAILLE]) {
 
 void remplacement(case_tableau tab[TAILLE][TAILLE]){
     int i, j, k;
-    bool vérif=0;  
+    bool vérif=0;
+    bool vériftot;
     
     
     do{             // remplacement de tout les caractères avec un booléen = 1 
-        détec_marque(tab);
+        vériftot=detecteMarque(tab,vériftot); // vériftot ici sert à détecter si le programme detecteMarque change une variable d'un caractère 
         DeplacerGauche(tab);
         for(i=0;i<TAILLE;i++){
             vérif=0;
@@ -187,7 +201,7 @@ void remplacement(case_tableau tab[TAILLE][TAILLE]){
             }
         }
         
-    }while(vérif==1);    
+    }while(vérif==1 || vériftot==1);    //le do while ici sert pour ne pas sortir de la boucle tant que un des deux booléens est égale à 1
 }
 
 void Affichage(case_tableau tab[TAILLE][TAILLE]){ // Affichage du tableau
