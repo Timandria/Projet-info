@@ -256,8 +256,16 @@ void Affichagemoji(case_tableau tab[TAILLE][TAILLE]){ // Affichage du tableau
 int i,j,k;
     for(i=0;i<TAILLE;i++){
         printf("\n \n");
-        printf("+----+----+----+----+----+----+----+----+----+----+\n"); // Ligne supérieure de séparation
+        if(i==0){
+        printf("   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.\n");
+        }
+        else{
+        printf(" +----+----+----+----+----+----+----+----+----+----+\n"); // Ligne supérieure de séparation
+        }
         for(k=0;k<TAILLE;k++){
+            if(k==0){
+                printf("%d",i);   
+            }
             if(tab[i][k].variable==1){
                 printf("|");
                 printf("\x1b[31m O ");
@@ -296,7 +304,7 @@ int i,j,k;
         }
         printf("|"); // Barre de fin
     } 
-    printf("\n+----+----+----+----+----+----+----+----+----+----+\n"); // Ligne inférieure de séparation
+    printf("\n +----+----+----+----+----+----+----+----+----+----+\n"); // Ligne inférieure de séparation
 }
 
 int main()
