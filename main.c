@@ -27,7 +27,6 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool veriftot) {
     bool verif = 0;
     veriftot = 0;   //booléen ppur vérifier qu'il ne reste aucune ligne ou colonne de 3 ou plus
     int i, j, k,l,m,o;
-    veriftot=0;
     for (int i = 0; i < 10; i++) {
         ol=10;
         for (int j = 0; j < ol; j++) {
