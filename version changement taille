@@ -151,7 +151,7 @@ bool detecteMarque(case_tableau tab[][20],int taille,bool veriftot) {
     return veriftot;
 }
 
-void remplacement(case_tableau tab[][20],int taille){
+void remplacement(case_tableau tab[][20],int taille,int différent){
     int i, j, k;
     bool vérif=0;
     bool vériftot;
@@ -160,9 +160,7 @@ void remplacement(case_tableau tab[][20],int taille){
     
     
     do{             // remplacement de tout les caractères avec un booléen = 1 
-        Affichage(tab, taille2);
         vériftot=detecteMarque(tab,taille2,vériftot); // vériftot ici sert à détecter si le programme detecteMarque change une variable d'un caractère 
-        Affichage(tab, taille2);
         DeplacerGauche(tab,taille2);
         Affichage(tab, taille2);
         for(i=0;i<taille;i++){
@@ -170,7 +168,7 @@ void remplacement(case_tableau tab[][20],int taille){
             for(k=0;k<taille;k++){ // Génération aléatoire des caractères
                 if(tab[i][k].variable==1){
                     vérif=1;
-                    tab[i][k].caractere='A'+rand()%6; // 6 symboles différents
+                    tab[i][k].caractere='A'+rand()%différent; //  symboles différents choisi par l'utilisateur
                     tab[i][k].variable=0; // variable à zero pour le compteur
                 }
             }
@@ -355,11 +353,17 @@ void Affichagemoji(case_tableau tab[][20],int taille){ // Affichage du tableau �
 
 int main() {
     int taille;
+    int différent;
     
     do {
         printf("Entrez la taille du tableau (entre 5 et 20) : ");
         scanf("%d", &taille);
     } while (taille < 5 || taille > 20);
+    
+    do {
+        printf("Entrez le nombre de forme différentes (entre 4 et 6) : ");
+        scanf("%d", &différent);
+    } while (différent < 4 || différent > 6);
     
     case_tableau tab[20][20]; // Définition du tableau
     
@@ -369,13 +373,13 @@ int main() {
     for (i = 0; i < taille; i++) {
         for (k = 0; k < taille; k++) {
         // Génération aléatoire des caractères
-        tab[i][k].caractere = 'A' + rand() % 6; // 6 symboles différents
+        tab[i][k].caractere = 'A' + rand() % différent; //  symboles différents choisit lors du scanf
         tab[i][k].variable = 0; // variable à zéro pour le compteur
     }
 }
 
 Affichage(tab, taille);
-remplacement(tab, taille);
+remplacement(tab, taille,différent);
 Affichage(tab, taille);
 
 return 0;
