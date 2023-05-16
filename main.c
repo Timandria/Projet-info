@@ -22,12 +22,12 @@ typedef struct case_tableau {
     bool variable;
 } case_tableau;
 
-bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) { 
+bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool veriftot) { 
     int ol, oc; // optimisation fin du k en ligne et colonne
-    bool vérif = 0;
-    vériftot = 0;   //booléen ppur vérifier qu'il ne reste aucune ligne ou colonne de 3 ou plus
+    bool verif = 0;
+    veriftot = 0;   //booléen ppur vérifier qu'il ne reste aucune ligne ou colonne de 3 ou plus
     int i, j, k,l,m,o;
-    vériftot=0;
+    veriftot=0;
     for (int i = 0; i < 10; i++) {
         ol=10;
         for (int j = 0; j < ol; j++) {
@@ -45,7 +45,7 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) {
                     for (int k = 0; k < compteur; k++) {
                         tab[i][k].variable=1; // remplacer les éléments par des "O"
                     }
-                    vériftot=1;
+                    veriftot=1;
                 }
                 if ((compteurinf >= 3&&compteur<=1)){
                     tab[i][0].variable=1; // remplacer du premier éléments par un "O"
@@ -53,7 +53,7 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) {
                         tab[i][k].variable=1; // remplacer les éléments par des "O"
                     }
                     ol=10-compteurinf; //optimisation fin de ligne
-                    vériftot=1;
+                    veriftot=1;
                 }
                 if (compteurinf+compteur>4&&compteur>=1&&compteurinf>=1){
                     for (int k = 0; k < compteur; k++) {
@@ -63,7 +63,7 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) {
                         tab[i][k].variable=1; // remplacer les éléments par des "O"
                     }
                     ol=10-compteurinf; //optimisation fin de ligne
-                    vériftot=1;
+                    veriftot=1;
                 }
             }
             if(i==0){
@@ -78,7 +78,7 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) {
                 if (compteur >= 3&&compteurinf==1) { // si on a trouvé une série d'au moins 3 éléments égaux
                     for (int k = 0; k < compteur; k++) {
                         tab[k][j].variable=1; // remplacer les éléments par des "O"
-                        vériftot=1;
+                        veriftot=1;
                         
                     }
                 }
@@ -86,7 +86,7 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) {
                     tab[0][j].variable=1; // remplacer du premier éléments par un "O"
                     for (int k = 11-compteurinf; k <10 ; k++) {
                         tab[k][j].variable=1; // remplacer les éléments par des "O"
-                        vériftot=1;
+                        veriftot=1;
                         
                     }
                 oc=10-compteurinf;
@@ -100,7 +100,7 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) {
                        
                     }
                 oc=10-compteurinf; //optimisation fin de ligne
-                vériftot=1;
+                veriftot=1;
                 }
             }
             int compteur = 1; // initialisation du compteur à 1
@@ -133,7 +133,7 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) {
                     for (int k = 0; k < compteur; k++) {
                         tab[i][j+k].variable=1; // remplacer les éléments par des "O"
                     }
-                    vériftot=1;
+                    veriftot=1;
                 }
                 compteur = 1; // réinitialisation du compteur à 1
                 while (i + compteur < 10 && tab[i + compteur][j].caractere == tab[i][j].caractere) {
@@ -143,12 +143,12 @@ bool detecteMarque(case_tableau tab[TAILLE][TAILLE], bool vériftot) {
                     for (int k = 0; k < compteur; k++) {
                         tab[i+k][j].variable=1; // remplacer les éléments par des "O"
                     }
-                    vériftot=1;
+                    veriftot=1;
                 }
             }
         }        
     }
-    return vériftot;
+    return veriftot;
 }
 
 
@@ -252,7 +252,52 @@ int i,j,k;
 }
 
 
-
+void Affichagemoji(case_tableau tab[TAILLE][TAILLE]){ // Affichage du tableau
+int i,j,k;
+    for(i=0;i<TAILLE;i++){
+        printf("\n \n");
+        printf("+----+----+----+----+----+----+----+----+----+----+\n"); // Ligne supérieure de séparation
+        for(k=0;k<TAILLE;k++){
+            if(tab[i][k].variable==1){
+                printf("|");
+                printf("\x1b[31m O ");
+                printf(PCOLOR("%d"),0);
+                
+            }
+            else if(tab[i][k].caractere=='A'){
+                printf("|");
+                printf(" 🍐 ");
+                
+            }
+            else if(tab[i][k].caractere=='B'){
+                printf("|");
+                printf(" 🍉 ");
+            }
+            else if(tab[i][k].caractere=='C'){
+                printf("|");
+                printf(" 🥝 ");
+                
+            }
+            else if(tab[i][k].caractere=='D'){
+                printf("|");
+                printf(" 🍇 ");
+                
+            }
+            else if(tab[i][k].caractere=='E'){
+                printf("|");
+                printf(" 🧁 ");
+                printf(PCOLOR("%d"),0);
+            }
+            else if(tab[i][k].caractere=='F'){
+                printf("|");
+                printf(" 🥕 ");
+                printf(PCOLOR("%d"),0);
+            }
+        }
+        printf("|"); // Barre de fin
+    } 
+    printf("\n+----+----+----+----+----+----+----+----+----+----+\n"); // Ligne inférieure de séparation
+}
 
 int main()
 {
@@ -268,10 +313,11 @@ int main()
     }
     Affichage(tab);
     remplacement(tab);
-    Affichage(tab);
+    Affichagemoji(tab);
     
     return 0;
 }
+
 
 
 
