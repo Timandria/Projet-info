@@ -355,6 +355,7 @@ void echange(case_tableau tab[][20],int taille){
   b1=0;
   a2=0;
   b2=0;
+  int temp;
   
   //boucle pour recommencer après chaque échange  
   int erreur=0; 
@@ -433,6 +434,9 @@ void echange(case_tableau tab[][20],int taille){
     printf("condition ok\n");
     case1=tab[a2][b2].caractere;    //échange de la case1 par la case2
     case2=tab[a1][b1].caractere;    //pareil mais pour case2 par case1
+    temp=tab[a1][b1].caractere;
+    tab[a1][b1].caractere=tab[a2][b2].caractere;
+    tab[a2][b2].caractere=temp;
 
     printf("case1 échangée: ");
     if(case1=='A'){
@@ -487,6 +491,9 @@ void echange(case_tableau tab[][20],int taille){
     printf("ok ligne\n");  //pour vérifier cette codition
     case1=tab[a2][b2].caractere;     //échange
     case2=tab[a1][b1].caractere;
+    temp=tab[a1][b1].caractere;
+    tab[a1][b1].caractere=tab[a2][b2].caractere;
+    tab[a2][b2].caractere=temp;
 
     printf("case1 échangée: ");
     if(case1=='A'){
@@ -542,6 +549,9 @@ void echange(case_tableau tab[][20],int taille){
     printf("ok colonne\n");
     case1=tab[a2][b2].caractere;
     case2=tab[a1][b1].caractere;
+    temp=tab[a1][b1].caractere;
+    tab[a1][b1].caractere=tab[a2][b2].caractere;
+    tab[a2][b2].caractere=temp;
     
     printf("case1 échangée: ");
     if(case1=='A'){
