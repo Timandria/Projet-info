@@ -192,7 +192,7 @@ bool detecteMarque(case_tableau tab[][20],int taille,bool veriftot) {
                     ol=taille-compteurinf; //optimisation fin de ligne
                     veriftot=1;
                 }
-                if (compteurinf+compteur>4&&compteur>=1&&compteurinf>=1){
+                if (compteurinf+compteur>=4&&compteur>=1&&compteurinf>=1){
                     for (int k = 0; k < compteur; k++) {
                         tab[i][k].variable=1; // remplacer les éléments par des "O"
                     }
@@ -221,14 +221,14 @@ bool detecteMarque(case_tableau tab[][20],int taille,bool veriftot) {
                 }
                 if (compteurinf >= 3&&compteur==1){
                     tab[0][j].variable=1; // remplacer du premier éléments par un "O"
-                    for (int k = 11-compteurinf; k <10 ; k++) {
+                    for (int k = taille+1-compteurinf; k <10 ; k++) {
                         tab[k][j].variable=1; // remplacer les éléments par des "O"
                         veriftot=1;
                         
                     }
                 oc=taille-compteurinf;
                 }
-                if (compteurinf+compteur>4&&compteur!=1&&compteurinf!=1){
+                if (compteurinf+compteur>=4&&compteur!=1&&compteurinf!=1){
                     for (int k = 0; k < compteur; k++) {
                         tab[k][j].variable=1; // remplacer les éléments par des "O"
                     }
@@ -389,7 +389,6 @@ Affichage(tab, taille);
 
 return 0;
 }
-
 
 
 
