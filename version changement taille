@@ -22,198 +22,6 @@ typedef struct case_tableau {
     int TAILLE;
 } case_tableau;
 
-bool detecteMarque(case_tableau tab[][20],int taille,bool veriftot) {
-    int ol, oc; // optimisation fin du k en ligne et colonne
-    bool verif = 0;
-    veriftot = 0; // booléen pour vérifier qu'il ne reste aucune ligne ou colonne de 3 ou plus
-    int i, j, k, l, m, o;
-    
-    for (int i = 0; i < taille; i++) {
-        ol=taille;
-        for (int j = 0; j < ol; j++) {
-            if(j==0){
-                oc=taille;
-                int compteur = 1; // initialisation des compteurs à 1
-                int compteurinf=1;
-                while (compteur < taille && tab[i][compteur].caractere == tab[i][j].caractere) {
-                compteur++; // compter le nombre d'éléments égaux vers la droite
-                }
-                while (taille-compteurinf >=0 && tab[i][taille - compteurinf].caractere == tab[i][0].caractere) {
-                compteurinf++; // compter le nombre d'éléments égaux vers la droite
-                }
-                if (compteur >= 3&&compteurinf<=1) { // si on a trouvé une série d'au moins 3 éléments égaux
-                    for (int k = 0; k < compteur; k++) {
-                        tab[i][k].variable=1; // remplacer les éléments par des "O"
-                    }
-                    veriftot=1;
-                }
-                if ((compteurinf >= 3&&compteur<=1)){
-                    tab[i][0].variable=1; // remplacer du premier éléments par un "O"
-                    for (int k = taille+1-compteurinf; k < taille ; k++) {
-                        tab[i][k].variable=1; // remplacer les éléments par des "O"
-                    }
-                    ol=taille-compteurinf; //optimisation fin de ligne
-                    veriftot=1;
-                }
-                if (compteurinf+compteur>4&&compteur>=1&&compteurinf>=1){
-                    for (int k = 0; k < compteur; k++) {
-                        tab[i][k].variable=1; // remplacer les éléments par des "O"
-                    }
-                    for (int k = taille + 1 - compteurinf; k<taille ; k++) {
-                        tab[i][k].variable=1; // remplacer les éléments par des "O"
-                    }
-                    ol=taille-compteurinf; //optimisation fin de ligne
-                    veriftot=1;
-                }
-            }
-            if(i==0){
-                int compteur = 1; // réinitialisation des compteurs à 1
-                int compteurinf=1; 
-                while (taille-compteurinf >=0 && tab[taille - compteurinf][j].caractere == tab[i][j].caractere) {
-                compteurinf++; // compter le nombre d'éléments égaux vers la droite
-                }
-                while (compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
-                    compteur++; // compter le nombre d'éléments égaux vers le bas
-                }
-                if (compteur >= 3&&compteurinf==1) { // si on a trouvé une série d'au moins 3 éléments égaux
-                    for (int k = 0; k < compteur; k++) {
-                        tab[k][j].variable=1; // remplacer les éléments par des "O"
-                        veriftot=1;
-                        
-                    }
-                }
-                if (compteurinf >= 3&&compteur==1){
-                    tab[0][j].variable=1; // remplacer du premier éléments par un "O"
-                    for (int k = 11-compteurinf; k <10 ; k++) {
-                        tab[k][j].variable=1; // remplacer les éléments par des "O"
-                        veriftot=1;
-                        
-                    }
-                oc=taille-compteurinf;
-                }
-                if (compteurinf+compteur>4&&compteur!=1&&compteurinf!=1){
-                    for (int k = 0; k < compteur; k++) {
-                        tab[k][j].variable=1; // remplacer les éléments par des "O"
-                    }
-                    for (int k = taille+1 -compteur; k < 10; k++) {
-                        tab[k][j].variable=1; // remplacer les éléments par des "O"
-                       
-                    }
-                oc=taille-compteurinf; //optimisation fin de ligne
-                veriftot=1;
-                }
-            }
-            int compteur = 1; // initialisation du compteur à 1
-            while (j + compteur < taille && tab[i][j + compteur].caractere == tab[i][j].caractere) {
-                compteur++; // compter le nombre d'éléments égaux vers la droite
-            }
-            if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
-                for (int k = 0; k < compteur; k++) {
-                    tab[i][j+k].variable=1; // remplacer les éléments par des "O"
-                }
-            }
-            compteur = 1; // réinitialisation du compteur à 1
-            while (i + compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
-                compteur++; // compter le nombre d'éléments égaux vers le bas
-            }
-            if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
-                for (int k = 0; k < compteur; k++) {
-                    tab[i+k][j].variable=1; // remplacer les éléments par des "O"
-                }
-            }
-        
-        
-        
-            for (int j = 0; j < taille; j++) {
-                int compteur = 1; // initialisation du compteur à 1
-                while (j + compteur < taille && tab[i][j + compteur].caractere == tab[i][j].caractere) {
-                    compteur++; // compter le nombre d'éléments égaux vers la droite
-                }
-                if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
-                    for (int k = 0; k < compteur; k++) {
-                        tab[i][j+k].variable=1; // remplacer les éléments par des "O"
-                    }
-                    veriftot=1;
-                }
-                compteur = 1; // réinitialisation du compteur à 1
-                while (i + compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
-                    compteur++; // compter le nombre d'éléments égaux vers le bas
-                }
-                if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
-                    for (int k = 0; k < compteur; k++) {
-                        tab[i+k][j].variable=1; // remplacer les éléments par des "O"
-                    }
-                    veriftot=1;
-                }
-            }
-        }        
-    }
-    return veriftot;
-}
-
-void remplacement(case_tableau tab[][20],int taille,int différent){
-    int i, j, k;
-    bool vérif=0;
-    bool vériftot;
-    int taille2;
-    taille2=taille;
-    
-    
-    do{             // remplacement de tout les caractères avec un booléen = 1 
-        vériftot=detecteMarque(tab,taille2,vériftot); // vériftot ici sert à détecter si le programme detecteMarque change une variable d'un caractère 
-        DeplacerGauche(tab,taille2);
-        Affichage(tab, taille2);
-        for(i=0;i<taille;i++){
-            vérif=0;
-            for(k=0;k<taille;k++){ // Génération aléatoire des caractères
-                if(tab[i][k].variable==1){
-                    vérif=1;
-                    tab[i][k].caractere='A'+rand()%différent; //  symboles différents choisi par l'utilisateur
-                    tab[i][k].variable=0; // variable à zero pour le compteur
-                }
-            }
-        }
-        
-    }while(vérif==1 || vériftot==1);    //le do while ici sert pour ne pas sortir de la boucle tant que un des deux booléens est égale à 1
-}
-
-
-void DeplacerGauche(case_tableau tab[][20],int taille) {
-    int i,j,k;
-    bool vérif=0;
-    
-    
-    
-    for (i = 0; i < taille; i++) {
-        for (j = 0; j < taille; j++) {
-            if (tab[i][j].variable == 1) {
-                k = j;
-                while (k > 0 && tab[i][k - 1].variable == 0) {
-                    // Échanger le caractère (avec son booléen précédent!!!!)
-                    char tempCaractere = tab[i][k - 1].caractere;
-                    int tempVariable = tab[i][k - 1].variable;
-                    tab[i][k - 1].caractere = tab[i][k].caractere;
-                    tab[i][k - 1].variable = tab[i][k].variable;
-                    tab[i][k].caractere = tempCaractere;
-                    tab[i][k].variable = tempVariable;
-                    k--;
-                }
-            }
-        }
-    }
-
-
-    
-
-}
-
-
-
-
-
-    
-
-
 
 void Affichage(case_tableau tab[][20], int taille) {
     int i, j, k, l;
@@ -351,6 +159,203 @@ void Affichagemoji(case_tableau tab[][20],int taille){ // Affichage du tableau �
     }
 }
 
+bool detecteMarque(case_tableau tab[][20],int taille,bool veriftot) {
+    int ol, oc; // optimisation fin du k en ligne et colonne
+    bool verif = 0;
+    veriftot = 0; // booléen pour vérifier qu'il ne reste aucune ligne ou colonne de 3 ou plus
+    int i, j, k, l, m, o;
+    
+    for (int i = 0; i < taille; i++) {
+        ol=taille;
+        for (int j = 0; j < ol; j++) {
+            if(j==0){
+                oc=taille;
+                int compteur = 1; // initialisation des compteurs à 1
+                int compteurinf=1;
+                while (compteur < taille && tab[i][compteur].caractere == tab[i][j].caractere) {
+                compteur++; // compter le nombre d'éléments égaux vers la droite
+                }
+                while (taille-compteurinf >=0 && tab[i][taille - compteurinf].caractere == tab[i][0].caractere) {
+                compteurinf++; // compter le nombre d'éléments égaux vers la droite
+                }
+                if (compteur >= 3&&compteurinf<=1) { // si on a trouvé une série d'au moins 3 éléments égaux
+                    for (int k = 0; k < compteur; k++) {
+                        tab[i][k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    veriftot=1;
+                }
+                if ((compteurinf >= 3&&compteur<=1)){
+                    tab[i][0].variable=1; // remplacer du premier éléments par un "O"
+                    for (int k = taille+1-compteurinf; k < taille ; k++) {
+                        tab[i][k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    ol=taille-compteurinf; //optimisation fin de ligne
+                    veriftot=1;
+                }
+                if (compteurinf+compteur>4&&compteur>=1&&compteurinf>=1){
+                    for (int k = 0; k < compteur; k++) {
+                        tab[i][k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    for (int k = taille + 1 - compteurinf; k<taille ; k++) {
+                        tab[i][k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    ol=taille-compteurinf; //optimisation fin de ligne
+                    veriftot=1;
+                }
+            }
+            if(i==0){
+                int compteur = 1; // réinitialisation des compteurs à 1
+                int compteurinf=1; 
+                while (taille-compteurinf >=0 && tab[taille - compteurinf][j].caractere == tab[i][j].caractere) {
+                compteurinf++; // compter le nombre d'éléments égaux vers la droite
+                }
+                while (compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
+                    compteur++; // compter le nombre d'éléments égaux vers le bas
+                }
+                if (compteur >= 3&&compteurinf==1) { // si on a trouvé une série d'au moins 3 éléments égaux
+                    for (int k = 0; k < compteur; k++) {
+                        tab[k][j].variable=1; // remplacer les éléments par des "O"
+                        veriftot=1;
+                        
+                    }
+                }
+                if (compteurinf >= 3&&compteur==1){
+                    tab[0][j].variable=1; // remplacer du premier éléments par un "O"
+                    for (int k = 11-compteurinf; k <10 ; k++) {
+                        tab[k][j].variable=1; // remplacer les éléments par des "O"
+                        veriftot=1;
+                        
+                    }
+                oc=taille-compteurinf;
+                }
+                if (compteurinf+compteur>4&&compteur!=1&&compteurinf!=1){
+                    for (int k = 0; k < compteur; k++) {
+                        tab[k][j].variable=1; // remplacer les éléments par des "O"
+                    }
+                    for (int k = taille+1 -compteur; k < 10; k++) {
+                        tab[k][j].variable=1; // remplacer les éléments par des "O"
+                       
+                    }
+                oc=taille-compteurinf; //optimisation fin de ligne
+                veriftot=1;
+                }
+            }
+            int compteur = 1; // initialisation du compteur à 1
+            while (j + compteur < taille && tab[i][j + compteur].caractere == tab[i][j].caractere) {
+                compteur++; // compter le nombre d'éléments égaux vers la droite
+            }
+            if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
+                for (int k = 0; k < compteur; k++) {
+                    tab[i][j+k].variable=1; // remplacer les éléments par des "O"
+                }
+            }
+            compteur = 1; // réinitialisation du compteur à 1
+            while (i + compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
+                compteur++; // compter le nombre d'éléments égaux vers le bas
+            }
+            if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
+                for (int k = 0; k < compteur; k++) {
+                    tab[i+k][j].variable=1; // remplacer les éléments par des "O"
+                }
+            }
+        
+        
+        
+            for (int j = 0; j < taille; j++) {
+                int compteur = 1; // initialisation du compteur à 1
+                while (j + compteur < taille && tab[i][j + compteur].caractere == tab[i][j].caractere) {
+                    compteur++; // compter le nombre d'éléments égaux vers la droite
+                }
+                if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
+                    for (int k = 0; k < compteur; k++) {
+                        tab[i][j+k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    veriftot=1;
+                }
+                compteur = 1; // réinitialisation du compteur à 1
+                while (i + compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
+                    compteur++; // compter le nombre d'éléments égaux vers le bas
+                }
+                if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
+                    for (int k = 0; k < compteur; k++) {
+                        tab[i+k][j].variable=1; // remplacer les éléments par des "O"
+                    }
+                    veriftot=1;
+                }
+            }
+        }        
+    }
+    return veriftot;
+}
+
+void DeplacerGauche(case_tableau tab[][20],int taille) {
+    int i,j,k;
+    bool vérif=0;
+    
+    
+    
+    for (i = 0; i < taille; i++) {
+        for (j = 0; j < taille; j++) {
+            if (tab[i][j].variable == 1) {
+                k = j;
+                while (k > 0 && tab[i][k - 1].variable == 0) {
+                    // Échanger le caractère (avec son booléen précédent!!!!)
+                    char tempCaractere = tab[i][k - 1].caractere;
+                    int tempVariable = tab[i][k - 1].variable;
+                    tab[i][k - 1].caractere = tab[i][k].caractere;
+                    tab[i][k - 1].variable = tab[i][k].variable;
+                    tab[i][k].caractere = tempCaractere;
+                    tab[i][k].variable = tempVariable;
+                    k--;
+                }
+            }
+        }
+    }
+
+
+    
+
+}
+
+
+void remplacement(case_tableau tab[][20],int taille,int différent){
+    int i, j, k;
+    bool vérif=0;
+    bool vériftot;
+    int taille2;
+    taille2=taille;
+    
+    
+    do{             // remplacement de tout les caractères avec un booléen = 1 
+        vériftot=detecteMarque(tab,taille2,vériftot); // vériftot ici sert à détecter si le programme detecteMarque change une variable d'un caractère 
+        DeplacerGauche(tab,taille2);
+        Affichage(tab, taille2);
+        for(i=0;i<taille;i++){
+            vérif=0;
+            for(k=0;k<taille;k++){ // Génération aléatoire des caractères
+                if(tab[i][k].variable==1){
+                    vérif=1;
+                    tab[i][k].caractere='A'+rand()%différent; //  symboles différents choisi par l'utilisateur
+                    tab[i][k].variable=0; // variable à zero pour le compteur
+                }
+            }
+        }
+        
+    }while(vérif==1 || vériftot==1);    //le do while ici sert pour ne pas sortir de la boucle tant que un des deux booléens est égale à 1
+}
+
+
+
+
+
+
+
+    
+
+
+
+
+
 int main() {
     int taille;
     int différent;
@@ -384,7 +389,6 @@ Affichage(tab, taille);
 
 return 0;
 }
-
 
 
 
