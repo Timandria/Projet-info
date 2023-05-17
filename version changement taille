@@ -232,7 +232,7 @@ bool detecteMarque(case_tableau tab[][20],int taille,bool veriftot) {
                     for (int k = 0; k < compteur; k++) {
                         tab[k][j].variable=1; // remplacer les éléments par des "O"
                     }
-                    for (int k = taille+1 -compteur; k < taille; k++) {
+                    for (int k = taille+1 -compteurinf; k < taille; k++) {
                         tab[k][j].variable=1; // remplacer les éléments par des "O"
                        
                     }
