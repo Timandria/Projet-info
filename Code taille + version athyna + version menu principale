@@ -1,1 +1,738 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <stdbool.h> //pour les booléens
 
+#define S "0"//reSet color
+#define L "1"//add light to the color
+#define D "2"//assombrie les caractère
+#define E "22"//anule les effet L et D
+#define V "31"//rouge car R est déja pris
+#define G "32"//vert 
+#define Y "33"//jaune
+#define B "34"//bleu 
+#define M "35"//magenta
+#define C "36"//cyan
+#define W "37"//blanc
+
+#define PCOLOR(X) "\x1b["X"m"    //macro pour ajouter la couleur facilement, le X est l'emplacement du code couleur, au forma "nombre"
+typedef struct case_tableau {
+    char caractere;
+    bool variable;
+    int TAILLE;
+    int different;
+    int taille;
+} case_tableau;
+
+
+
+
+
+
+
+void Affichage(case_tableau tab[][20], int taille) {
+    int i, j, k, l;
+    
+    for (i = 0; i < taille; i++) {
+        printf("\n \n");
+        
+        for (l = 0; l < taille; l++) {
+            if (l == taille - 1) {
+                printf("+---+\n"); // Ligne de fin de séparation
+                break;
+            } else {
+                printf("+---"); // Ligne à multiplier de séparation
+            }
+        }
+        
+        for (k = 0; k < taille; k++) {
+            if (tab[i][k].variable == 1) {
+                printf("|");
+                printf("\x1b[31m O ");
+                printf(PCOLOR("%d"), 0);
+            } else if (tab[i][k].caractere == 'A') {
+                printf("|");
+                printf("\x1b[32m A ");
+                printf(PCOLOR("%d"), 0);
+            } else if (tab[i][k].caractere == 'B') {
+                printf("|");
+                printf("\x1b[33m B ");
+                printf(PCOLOR("%d"), 0);
+            } else if (tab[i][k].caractere == 'C') {
+                printf("|");
+                printf("\x1b[34m C ");
+                printf(PCOLOR("%d"), 0);
+            } else if (tab[i][k].caractere == 'D') {
+                printf("|");
+                printf("\x1b[35m D ");
+                printf(PCOLOR("%d"), 0);
+            } else if (tab[i][k].caractere == 'E') {
+                printf("|");
+                printf("\x1b[36m E ");
+                printf(PCOLOR("%d"), 0);
+            } else if (tab[i][k].caractere == 'F') {
+                printf("|");
+                printf("\x1b[37m F ");
+                printf(PCOLOR("%d"), 0);
+            }
+        }
+        printf("|"); // Barre de fin
+    }
+    
+    printf("\n");
+    
+    for (l = 0; l < taille; l++) {
+        if (l == taille - 1) {
+            printf("+---+\n"); // Ligne de fin de séparation
+        } 
+        else {
+            printf("+---"); // Ligne à multiplier de séparation
+        }
+    }
+}
+
+
+
+void Affichagemoji(case_tableau tab[][20],int taille){ // Affichage du tableau à modifier pendant la séance d'info
+    int i,j,k,l,m;
+        for(i=0;i<taille;i++){
+            printf("\n \n");
+            if(i==0){
+                for(m=0;m<taille;m++){        //affichage des chiffres en hauteur
+                    printf("   %d.",m);
+                }
+                printf("\n ");      
+            }
+            for (l = 0; l < taille; l++) {
+                if (l == taille - 1) {
+                    printf("+----+\n"); // Ligne de fin de séparation
+                    break;
+                } 
+                else {
+                printf("+----"); // Ligne à multiplier de séparation
+                }
+            }
+                for(k=0;k<taille;k++){
+                    if(k==0){
+                printf("%d",i);   
+            }
+            if(tab[i][k].variable==1){
+                printf("|");
+                printf("\x1b[31m O ");
+                printf(PCOLOR("%d"),0);
+                
+            }
+            else if(tab[i][k].caractere=='A'){
+                printf("|");
+                printf(" 🍐 ");
+                
+            }
+            else if(tab[i][k].caractere=='B'){
+                printf("|");
+                printf(" 🍉 ");
+            }
+            else if(tab[i][k].caractere=='C'){
+                printf("|");
+                printf(" 🥝 ");
+                
+            }
+            else if(tab[i][k].caractere=='D'){
+                printf("|");
+                printf(" 🍇 ");
+                
+            }
+            else if(tab[i][k].caractere=='E'){
+                printf("|");
+                printf(" 🧁 ");
+                printf(PCOLOR("%d"),0);
+            }
+            else if(tab[i][k].caractere=='F'){
+                printf("|");
+                printf(" 🥕 ");
+                printf(PCOLOR("%d"),0);
+            }
+        }
+        printf("|"); // Barre de fin
+    } 
+    printf("\n");
+    
+    for (l = 0; l < taille; l++) {
+        if (l == taille - 1) {
+            printf("+----+\n"); // Ligne de fin de séparation
+        } 
+        else{
+            printf("+----"); // Ligne à multiplier de séparation
+        }
+    }
+}
+
+bool detecteMarque(case_tableau tab[][20],int taille,bool veriftot) {
+    int ol, oc; // optimisation fin du k en ligne et colonne
+    bool verif = 0;
+    veriftot = 0; // booléen pour vérifier qu'il ne reste aucune ligne ou colonne de 3 ou plus
+    int i, j, k, l, m, o;
+    
+    for (int i = 0; i < taille; i++) {
+        ol=taille;
+        for (int j = 0; j < ol; j++) {
+            if(j==0){
+                oc=taille;
+                int compteur = 1; // initialisation des compteurs à 1
+                int compteurinf=1;
+                while (compteur < taille && tab[i][compteur].caractere == tab[i][j].caractere) {
+                compteur++; // compter le nombre d'éléments égaux vers la droite
+                }
+                while (taille-compteurinf >=0 && tab[i][taille - compteurinf].caractere == tab[i][0].caractere) {
+                compteurinf++; // compter le nombre d'éléments égaux vers la droite
+                }
+                if (compteur >= 3&&compteurinf<=1) { // si on a trouvé une série d'au moins 3 éléments égaux
+                    for (int k = 0; k < compteur; k++) {
+                        tab[i][k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    veriftot=1;
+                }
+                if ((compteurinf >= 3&&compteur<=1)){
+                    tab[i][0].variable=1; // remplacer du premier éléments par un "O"
+                    for (int k = taille+1-compteurinf; k < taille ; k++) {
+                        tab[i][k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    ol=taille-compteurinf; //optimisation fin de ligne
+                    veriftot=1;
+                }
+                if (compteurinf+compteur>=4&&compteur>=1&&compteurinf>=1){
+                    for (int k = 0; k < compteur; k++) {
+                        tab[i][k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    for (int k = taille + 1 - compteurinf; k<taille ; k++) {
+                        tab[i][k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    ol=taille-compteurinf; //optimisation fin de ligne
+                    veriftot=1;
+                }
+            }
+            if(i==0){
+                int compteur = 1; // réinitialisation des compteurs à 1
+                int compteurinf=1; 
+                while (taille-compteurinf >=0 && tab[taille - compteurinf][j].caractere == tab[i][j].caractere) {
+                compteurinf++; // compter le nombre d'éléments égaux vers la droite
+                }
+                while (compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
+                    compteur++; // compter le nombre d'éléments égaux vers le bas
+                }
+                if (compteur >= 3&&compteurinf==1) { // si on a trouvé une série d'au moins 3 éléments égaux
+                    for (int k = 0; k < compteur; k++) {
+                        tab[k][j].variable=1; // remplacer les éléments par des "O"
+                        veriftot=1;
+                        
+                    }
+                }
+                if (compteurinf >= 3&&compteur==1){
+                    tab[0][j].variable=1; // remplacer du premier éléments par un "O"
+                    for (int k = taille+1-compteurinf; k <taille ; k++) {
+                        tab[k][j].variable=1; // remplacer les éléments par des "O"
+                        veriftot=1;
+                        
+                    }
+                oc=taille-compteurinf;
+                }
+                if (compteurinf+compteur>=4&&compteur!=1&&compteurinf!=1){
+                    for (int k = 0; k < compteur; k++) {
+                        tab[k][j].variable=1; // remplacer les éléments par des "O"
+                    }
+                    for (int k = taille+1 -compteurinf; k < taille; k++) {
+                        tab[k][j].variable=1; // remplacer les éléments par des "O"
+                       
+                    }
+                oc=taille-compteurinf; //optimisation fin de ligne
+                veriftot=1;
+                }
+            }
+            int compteur = 1; // initialisation du compteur à 1
+            while (j + compteur < taille && tab[i][j + compteur].caractere == tab[i][j].caractere) {
+                compteur++; // compter le nombre d'éléments égaux vers la droite
+            }
+            if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
+                for (int k = 0; k < compteur; k++) {
+                    tab[i][j+k].variable=1; // remplacer les éléments par des "O"
+                }
+            }
+            compteur = 1; // réinitialisation du compteur à 1
+            while (i + compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
+                compteur++; // compter le nombre d'éléments égaux vers le bas
+            }
+            if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
+                for (int k = 0; k < compteur; k++) {
+                    tab[i+k][j].variable=1; // remplacer les éléments par des "O"
+                }
+            }
+        
+        
+        
+            for (int j = 0; j < taille; j++) {
+                int compteur = 1; // initialisation du compteur à 1
+                while (j + compteur < taille && tab[i][j + compteur].caractere == tab[i][j].caractere) {
+                    compteur++; // compter le nombre d'éléments égaux vers la droite
+                }
+                if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
+                    for (int k = 0; k < compteur; k++) {
+                        tab[i][j+k].variable=1; // remplacer les éléments par des "O"
+                    }
+                    veriftot=1;
+                }
+                compteur = 1; // réinitialisation du compteur à 1
+                while (i + compteur < taille && tab[i + compteur][j].caractere == tab[i][j].caractere) {
+                    compteur++; // compter le nombre d'éléments égaux vers le bas
+                }
+                if (compteur >= 3) { // si on a trouvé une série d'au moins 3 éléments égaux
+                    for (int k = 0; k < compteur; k++) {
+                        tab[i+k][j].variable=1; // remplacer les éléments par des "O"
+                    }
+                    veriftot=1;
+                }
+            }
+        }        
+    }
+    return veriftot;
+}
+
+void DeplacerGauche(case_tableau tab[][20],int taille) {
+    int i,j,k;
+    bool verif=0;
+    
+    
+    
+    for (i = 0; i < taille; i++) {
+        for (j = 0; j < taille; j++) {
+            if (tab[i][j].variable == 1) {
+                k = j;
+                while (k > 0 && tab[i][k - 1].variable == 0) {
+                    // Échanger le caractère (avec son booléen précédent!!!!)
+                    char tempCaractere = tab[i][k - 1].caractere;
+                    int tempVariable = tab[i][k - 1].variable;
+                    tab[i][k - 1].caractere = tab[i][k].caractere;
+                    tab[i][k - 1].variable = tab[i][k].variable;
+                    tab[i][k].caractere = tempCaractere;
+                    tab[i][k].variable = tempVariable;
+                    k--;
+                }
+            }
+        }
+    }
+
+
+    
+
+}
+
+
+void remplacement(case_tableau tab[][20],int taille,int different){
+    int i, j, k;
+    bool vérif=0;
+    bool vériftot;
+    int taille2;
+    taille2=taille;
+    
+    
+    do{             // remplacement de tout les caractères avec un booléen = 1 
+        vériftot=detecteMarque(tab,taille2,vériftot); // vériftot ici sert à détecter si le programme detecteMarque change une variable d'un caractère 
+        DeplacerGauche(tab,taille2);
+        for(i=0;i<taille;i++){
+            vérif=0;
+            for(k=0;k<taille;k++){ // Génération aléatoire des caractères
+                if(tab[i][k].variable==1){
+                    vérif=1;
+                    tab[i][k].caractere='A'+rand()%different; //  symboles différents choisi par l'utilisateur
+                    tab[i][k].variable=0; // variable à zero pour le compteur
+                }
+            }
+        }
+        
+    }while(vérif==1 || vériftot==1);    //le do while ici sert pour ne pas sortir de la boucle tant que un des deux booléens est égale à 1
+}
+void echange(case_tableau tab[][20],int taille){
+  int a1, b1, a2, b2;    //a1 : ligne de la 1ère case à échanger et b1 : colonne de cette 1ère case
+                         // pareil pour a2 et b2
+  a1=0;
+  b1=0;
+  a2=0;
+  b2=0;
+  int temp;
+  
+  //boucle pour recommencer après chaque échange  
+  int erreur=0; 
+  while(erreur==0){ 
+    char case1, case2;
+  
+    
+    do{  //pour vérifier l'inverse : on veut que les a et b soient compris entre 0 et _ inclus
+      printf("\nDonnez les coordonnées de la 1ère case : ligne, puis colonne\n"); 
+      scanf("%d",&a1);
+      scanf("%d",&b1);
+    }while (a1<0 || a1>taille || b1<0 || b1>taille );
+    case1=tab[a1][b1].caractere;
+    
+    printf("case1: ");
+    if(case1=='A'){
+      printf(" 🍐 \n");
+    }
+    else if(case1=='B'){
+      printf(" 🍉 \n");
+    }
+    else if(case1=='C'){
+      printf(" 🥝 \n");
+    }
+    else if(case1=='D'){
+      printf(" 🍇 \n");               
+    }
+    else if(case1=='E'){
+      printf(" 🧁 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    else if(case1=='F'){
+      printf(" 🥕 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+
+
+
+
+
+    do{
+      printf("Donnez les coordonnées de la 2nd case : ligne, puis colonne\n");
+      scanf("%d",&a2);
+      scanf("%d",&b2);
+    }while (a2<0 || a2>taille || b2<0 || b2>taille);
+    case2=tab[a2][b2].caractere;
+
+    printf("case2: ");
+    if(case2=='A'){
+      printf(" 🍐 \n");
+    }
+    else if(case2=='B'){
+      printf(" 🍉 \n");
+    }
+    else if(case2=='C'){
+      printf(" 🥝 \n");
+    }
+    else if(case2=='D'){
+      printf(" 🍇 \n");               
+    }
+    else if(case2=='E'){
+      printf(" 🧁 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    else if(case2=='F'){
+      printf(" 🥕 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+
+
+
+
+
+    
+  if (((a1==a2)&&((b1==b2+1)||(b1==b2-1))) || ((b1==b2)&&((a1==a2+1)||(a1==a2-1)))){  //condition pour vérifier que les cases soient à côtés ou au-dessus/dessous
+    printf("condition ok\n");
+    case1=tab[a2][b2].caractere;    //échange de la case1 par la case2
+    case2=tab[a1][b1].caractere;    //pareil mais pour case2 par case1
+    temp=tab[a1][b1].caractere;
+    tab[a1][b1].caractere=tab[a2][b2].caractere;
+    tab[a2][b2].caractere=temp;
+
+    printf("case1 échangée: ");
+    if(case1=='A'){
+      printf(" 🍐 \n");
+    }
+    else if(case1=='B'){
+      printf(" 🍉 \n");
+    }
+    else if(case1=='C'){
+      printf(" 🥝 \n");
+    }
+    else if(case1=='D'){
+      printf(" 🍇 \n");               
+    }
+    else if(case1=='E'){
+      printf(" 🧁 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    else if(case1=='F'){
+      printf(" 🥕 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+
+
+    printf("case2 échangée: ");
+    if(case2=='A'){
+      printf(" 🍐 \n");
+    }
+    else if(case2=='B'){
+      printf(" 🍉 \n");
+    }
+    else if(case2=='C'){
+      printf(" 🥝 \n");
+    }
+    else if(case2=='D'){
+      printf(" 🍇 \n");               
+    }
+    else if(case2=='E'){
+      printf(" 🧁 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    else if(case2=='F'){
+      printf(" 🥕 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+
+
+    
+    
+  }
+  else if((a1==a2)&&((b1==0 && b2==taille-1)||(b1==taille-1 && b2==0))){    //condition spéciale où les 2 cases à échanger sont aux extrêmités de la même ligne
+    printf("ok ligne\n");  //pour vérifier cette codition
+    case1=tab[a2][b2].caractere;     //échange
+    case2=tab[a1][b1].caractere;
+    temp=tab[a1][b1].caractere;
+    tab[a1][b1].caractere=tab[a2][b2].caractere;
+    tab[a2][b2].caractere=temp;
+
+    printf("case1 échangée: ");
+    if(case1=='A'){
+      printf(" 🍐 \n");
+    }
+    else if(case1=='B'){
+      printf(" 🍉 \n");
+    }
+    else if(case1=='C'){
+      printf(" 🥝 \n");
+    }
+    else if(case1=='D'){
+      printf(" 🍇 \n");               
+    }
+    else if(case1=='E'){
+      printf(" 🧁 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    else if(case1=='F'){
+      printf(" 🥕 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+
+
+    
+    printf("case2 échangée: ");
+    if(case2=='A'){
+      printf(" 🍐 \n");
+    }
+    else if(case2=='B'){
+      printf(" 🍉 \n");
+    }
+    else if(case2=='C'){
+      printf(" 🥝 \n");
+    }
+    else if(case2=='D'){
+      printf(" 🍇 \n");               
+    }
+    else if(case2=='E'){
+      printf(" 🧁 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    else if(case2=='F'){
+      printf(" 🥕 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+
+
+
+    
+  }
+  else if((b1==b2)&&((a1==0 && a2==taille-1)||(a1==taille-1 && a2==0))){ //condition spéciale où les 2 cases à échanger sont aux extrêmités de la même colonne
+    printf("ok colonne\n");
+    case1=tab[a2][b2].caractere;
+    case2=tab[a1][b1].caractere;
+    temp=tab[a1][b1].caractere;
+    tab[a1][b1].caractere=tab[a2][b2].caractere;
+    tab[a2][b2].caractere=temp;
+    
+    printf("case1 échangée: ");
+    if(case1=='A'){
+      printf(" 🍐 \n");
+    }
+    else if(case1=='B'){
+      printf(" 🍉 \n");
+    }
+    else if(case1=='C'){
+      printf(" 🥝 \n");
+    }
+    else if(case1=='D'){
+      printf(" 🍇 \n");               
+    }
+    else if(case1=='E'){
+      printf(" 🧁 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    else if(case1=='F'){
+      printf(" 🥕 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+
+
+
+
+
+
+    printf("case2 échangée: ");
+    if(case2=='A'){
+      printf(" 🍐 \n");
+    }
+    else if(case2=='B'){
+      printf(" 🍉 \n");
+    }
+    else if(case2=='C'){
+      printf(" 🥝 \n");
+    }
+    else if(case2=='D'){
+      printf(" 🍇 \n");               
+    }
+    else if(case2=='E'){
+      printf(" 🧁 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    else if(case2=='F'){
+      printf(" 🥕 \n");
+      //printf(PCOLOR("%d"),0);
+    }
+    
+  }
+
+    
+  else {  //erreur car : coordonnées corresponds pas ou cases pas à côtés
+    printf("\nErreur\nRefaire:\n\n");
+  }
+
+//afficher tbl après l'échange : ??
+
+}  
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void definition_parametres() {
+  int taille, different;
+  
+  do {
+        printf("Entrez la taille du tableau (entre 5 et 20) : ");
+        scanf("%d", &taille);
+    } while (taille < 5 || taille > 20);
+    
+    do {
+        printf("Entrez le nombre de forme différentes (entre 4 et 6) : ");
+        scanf("%d", &different);
+    } while (different < 4 || different > 6);
+    
+    case_tableau tab[20][20]; // Définition du tableau
+    
+    srand(time(NULL)); // Génération aléatoire
+    
+    int i, k;
+    for (i = 0; i < taille; i++) {
+        for (k = 0; k < taille; k++) {
+        // Génération aléatoire des caractères
+        tab[i][k].caractere = 'A' + rand() % different; //  symboles différents choisit lors du scanf
+        tab[i][k].variable = 0; // variable à zéro pour le compteur
+      }
+    }
+    remplacement(tab, taille,different);
+  Affichage(tab, taille);
+  echange(tab,taille);
+  Affichage(tab, taille);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void Ecran_titre(){
+    
+  int selection=5;                      // Valeur nécessaire pour rentrer dans la boucle while
+
+  printf("\x1b[34m----------------------------------\n");
+  printf("\x1b[34m--------------------------------\n");
+  printf("\n");
+
+  printf("\x1b[32mBienvenue sur CY - Crush ! :D\n ");        // Message d'accueil
+  
+  printf("\n");
+  printf("\x1b[34m--------------------------------\n");  
+  printf("\x1b[34m----------------------------------\n");
+  printf(PCOLOR("%d"),0);
+
+  printf("\n \n");
+
+  printf("\x1b[32m1." "\x1B[36mNouvelle partie\n\n");               // Interface Menu muni de 4 options
+  printf("\x1b[32m2." "\x1B[36mReprendre\n\n");
+  printf("\x1b[32m3." "\x1B[36mCrédits\n\n");
+  printf("\x1B[31m4. Quitter le jeu\n\n\n");
+  printf(PCOLOR("%d"),0);
+  
+  
+  
+
+  while (selection<1 || selection>4) {
+    
+    printf("\x1B[33mVeuillez entrer" "\x1B[32m [1]" "\x1B[33m," " \x1B[32m[2]" "\x1B[33," "\x1B[32m [3]" "\x1B[33m ou " "\x1B[31m[4]" "\x1B[33m :\n" );         // Demande à l'utilisateur de faire son choix
+    printf(PCOLOR("%d"),0);
+    scanf("%d", &selection);              // Récuperation de la réponse du joueur
+    
+    if (selection==1){
+      
+      printf("\x1B[33mC'est parti pour une nouvelle aventure ! \n");     // Lancement d'une nouvelle sauvegarde
+      printf(PCOLOR("%d"),0);
+      definition_parametres();
+    }
+
+    else if (selection==2) {
+      
+      printf("\x1B[33mHeureux de te retrouver, on est reparti !\n" );      // Lancement d'une sauvegarde précédente
+      printf(PCOLOR("%d"),0);
+    }
+
+    else if (selection==3) {
+      
+      printf("\x1B[33mCy Crush par :\n\n\n" "\x1B[34mBLUTEAU Corentin\n\n" "\x1B[32mLY Athyna\n\n" "\x1B[36mANDRIANAVALONA Timothé\n\n");                   // Affichage des crédits
+      printf(PCOLOR("%d"),0);
+      selection=5;                                   // Retour au début de la boucle, redemande choix du joueur
+
+      
+    }
+
+    else if (selection==4) {
+      
+      printf("\x1B[33mSalut, j'espère qu'on se reverra très bientôt ! :D\n");     // message d'au revoir, sayonara !
+      printf(PCOLOR("%d"),0);
+    }
+
+    else {
+      
+      printf("\x1B[31mVeuillez réessayer x(\n");    // Valeur entrée non valide --> retour au début de la boucle
+      printf(PCOLOR("%d"),0);
+    }
+  }
+  selection=5;
+}
+
+
+
+
+    
+
+
+
+
+
+int main() {
+
+  Ecran_titre();
+
+return 0;
+}
